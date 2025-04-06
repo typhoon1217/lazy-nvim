@@ -3,25 +3,20 @@ return {
   event = "VeryLazy",
   version = false, -- Never set this value to "*"! Never!
   opts = {
-    -- Choose one provider
-    provider = "anthropic", -- Use this line for Claude
-    -- provider = "ollama",  -- Or uncomment this and comment the above for Ollama
-
-    -- Provider configurations
-    anthropic = {
-      model = "claude-3-7-sonnet-20250219", -- Using Claude 3.7 Sonnet
-      api_key = vim.env.ANTHROPIC_API_KEY, -- Load from environment variable
-      timeout = 60000, -- Increased timeout for Claude
+    provider = "claude", -- Change from "anthropic" to "claude"
+    claude = { -- Change from "anthropic" to "claude"
+      model = "claude-3-7-sonnet-20250219",
+      api_key = vim.env.ANTHROPIC_API_KEY,
+      timeout = 60000,
       temperature = 0,
       max_tokens = 4096,
+      endpoint = "https://api.anthropic.com", -- Add this from the default config
     },
-    ollama = {
-      model = "qwen2.5-coder:14b",
-    },
+    -- Your other config options remain unchanged
   },
   build = "make",
   dependencies = {
-    -- Your dependencies remain unchanged
+    -- Dependencies remain unchanged
     "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
