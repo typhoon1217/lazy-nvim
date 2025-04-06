@@ -3,16 +3,27 @@ return {
   event = "VeryLazy",
   version = false, -- Never set this value to "*"! Never!
   opts = {
-    provider = "claude", -- Change from "anthropic" to "claude"
-    claude = { -- Change from "anthropic" to "claude"
-      model = "claude-3-7-sonnet-20250219",
-      api_key = vim.env.ANTHROPIC_API_KEY,
-      timeout = 60000,
+
+    copilot = {
+      endpoint = "https://api.githubcopilot.com",
+      model = "gpt-4o-2024-08-06",
+      proxy = nil, -- [protocol://]host[:port] Use this proxy
+      allow_insecure = false, -- Allow insecure server connections
+      timeout = 30000, -- Timeout in milliseconds
       temperature = 0,
-      max_tokens = 4096,
-      endpoint = "https://api.anthropic.com", -- Add this from the default config
+      max_tokens = 20480,
     },
-    -- Your other config options remain unchanged
+
+    -- provider = "claude", -- Change from "anthropic" to "claude"
+    -- claude = { -- Change from "anthropic" to "claude"
+    --   model = "claude-3-7-sonnet-20250219",
+    --   api_key = vim.env.ANTHROPIC_API_KEY,
+    --   timeout = 60000,
+    --   temperature = 0,
+    --   max_tokens = 4096,
+    --   endpoint = "https://api.anthropic.com", -- Add this from the default config
+    -- },
+    -- -- Your other config options remain unchanged
   },
   build = "make",
   dependencies = {
