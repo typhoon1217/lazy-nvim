@@ -50,7 +50,7 @@ return {
     file_selector = {
       provider = "snacks",
     },
-    provider = "cp_sonnet_37",
+    provider = "cp_sonnet_35",
     hints = { enabled = false },
     auto_suggestion_provider = "copilot",
     behaviour = {
@@ -62,12 +62,12 @@ return {
       minimize_diff = false, -- Whether to remove unchanged lines when applying a code block
     },
     vendors = {
-      -- cp_gpt4o = {
-      --   __inherited_from = "copilot",
-      --   timeout = 30000, -- Timeout in milliseconds
-      --   temperature = 0,
-      --   -- max_tokens = 4096,
-      -- },
+      cp_gpt4o = {
+        __inherited_from = "copilot",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        --max_tokens = 4096,
+      },
       cp_sonnet_35 = {
         __inherited_from = "copilot",
         model = "claude-3.5-sonnet",
