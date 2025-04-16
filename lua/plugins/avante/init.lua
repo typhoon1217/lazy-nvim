@@ -1,64 +1,177 @@
 return {
   "yetone/avante.nvim",
+  -- event = "BufEnter",
+  enabled = true,
   event = "VeryLazy",
-  version = false, -- Never set this value to "*"! Never!
+  version = false, -- set this if you want to always pull the latest change
   opts = {
-
-    copilot = {
-      endpoint = "https://api.githubcopilot.com",
-      model = "gpt-4o-2024-08-06",
-      proxy = nil, -- [protocol://]host[:port] Use this proxy
-      allow_insecure = false, -- Allow insecure server connections
-      timeout = 30000, -- Timeout in milliseconds
-      temperature = 0,
-      max_tokens = 20480,
+    openai = {
+      hide_in_model_selector = true,
     },
-
-    -- provider = "claude", -- Change from "anthropic" to "claude"
-    -- claude = { -- Change from "anthropic" to "claude"
-    --   model = "claude-3-7-sonnet-20250219",
-    --   api_key = vim.env.ANTHROPIC_API_KEY,
-    --   timeout = 60000,
-    --   temperature = 0,
-    --   max_tokens = 4096,
-    --   endpoint = "https://api.anthropic.com", -- Add this from the default config
+    ["openai-gpt-4o-mini"] = {
+      hide_in_model_selector = true,
+    },
+    cohere = {
+      hide_in_model_selector = true,
+    },
+    -- claude = {
+    --   hide_in_model_selector = true,
     -- },
-    -- -- Your other config options remain unchanged
+    ["claude-opus"] = {
+      hide_in_model_selector = true,
+    },
+    ["claude-haiku"] = {
+      hide_in_model_selector = true,
+    },
+    -- gemini = {
+    --   hide_in_model_selector = true,
+    -- },
+    vertex = {
+      hide_in_model_selector = true,
+    },
+    vertex_claude = {
+      hide_in_model_selector = true,
+    },
+    bedrock = {
+      hide_in_model_selector = true,
+    },
+    windows = {
+      sidebar_header = {
+        rounded = false,
+      },
+      input = {
+        height = 3,
+      },
+      ask = {
+        floating = false,
+        border = "none",
+      },
+    },
+    file_selector = {
+      provider = "snacks",
+    },
+    provider = "cp_sonnet_37",
+    hints = { enabled = false },
+    auto_suggestion_provider = "copilot",
+    behaviour = {
+      auto_suggestions = false, -- Experimental stage
+      auto_set_highlight_group = true,
+      auto_set_keymaps = true,
+      auto_apply_diff_after_generation = false,
+      support_paste_from_clipboard = false,
+      minimize_diff = false, -- Whether to remove unchanged lines when applying a code block
+    },
+    vendors = {
+      -- cp_gpt4o = {
+      --   __inherited_from = "copilot",
+      --   timeout = 30000, -- Timeout in milliseconds
+      --   temperature = 0,
+      --   -- max_tokens = 4096,
+      -- },
+      cp_sonnet_35 = {
+        __inherited_from = "copilot",
+        model = "claude-3.5-sonnet",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        -- max_tokens = 4096,
+      },
+      cp_sonnet_37 = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        -- max_tokens = 4096,
+      },
+      cp_claude_thinking = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet-thought",
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        -- max_tokens = 4096,
+      },
+      -- Available
+      copilot_o1 = {
+        __inherited_from = "copilot",
+        model = "o1",
+      },
+      -- Available
+      copilot_o3_mini = {
+        __inherited_from = "copilot",
+        model = "o3-mini",
+      },
+      -- Unavailable
+      copilot_gemini = {
+        __inherited_from = "copilot",
+        model = "gemini-2.0-flash-001",
+      },
+    },
   },
   build = "make",
   dependencies = {
-    -- Dependencies remain unchanged
-    "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    --- Optional dependencies
-    "echasnovski/mini.pick",
-    "nvim-telescope/telescope.nvim",
-    "hrsh7th/nvim-cmp",
-    "ibhagwan/fzf-lua",
-    "nvim-tree/nvim-web-devicons",
-    "zbirenbaum/copilot.lua",
     {
-      "HakonHarnes/img-clip.nvim",
-      event = "VeryLazy",
-      opts = {
-        default = {
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = true,
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("copilot").setup({
+          panels = { enabled = false },
+          suggestion = {
+            enabled = true,
+            auto_trigger = true,
+            hide_during_completion = true,
+            debounce = 75,
+            keymap = {
+              accept = "<C-M-y>",
+              accept_word = false,
+              accept_line = false,
+              next = "<C-M-n>",
+              prev = "<C-M-p>",
+              dismiss = "<C-Esc>",
+            },
           },
-          use_absolute_path = true,
-        },
-      },
+          filetypes = {
+            ["*"] = false,
+          },
+        })
+      end,
+    },
+    -- {
+    --   -- support for image pasting
+    --   "HakonHarnes/img-clip.nvim",
+    --   event = "VeryLazy",
+    --   opts = {
+    --     -- recommended settings
+    --     default = {
+    --       embed_image_as_base64 = false,
+    --       prompt_for_file_name = false,
+    --       drag_and_drop = {
+    --         insert_mode = true,
+    --       },
+    --       -- required for Windows users
+    --       use_absolute_path = true,
+    --     },
+    --   },
+    -- },
+  },
+  keys = {
+    {
+      "<leader>aA",
+      function()
+        vim.cmd("Copilot! attach")
+        vim.notify("Copilot attached", vim.log.levels.INFO, { title = "avante" })
+      end,
+      desc = "avante: attach Copilot",
     },
     {
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = {
-        file_types = { "markdown", "Avante" },
-      },
-      ft = { "markdown", "Avante" },
+      "<leader>aD",
+      function()
+        vim.cmd("Copilot! detach")
+        vim.notify("Copilot detached", vim.log.levels.INFO, { title = "avante" })
+      end,
+      desc = "avante: detach Copilot",
     },
   },
 }
