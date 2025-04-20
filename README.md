@@ -94,6 +94,5 @@ You can customize the configuration by modifying the Lua files in the `lua/plugi
 
 [MIT](LICENSE)
 
-```
 
 
