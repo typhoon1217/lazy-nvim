@@ -119,8 +119,8 @@ return {
         require("copilot").setup({
           panels = { enabled = false },
           suggestion = {
-            enabled = true,
-            auto_trigger = true,
+            enabled = false,
+            auto_trigger = false,
             hide_during_completion = true,
             debounce = 75,
             keymap = {

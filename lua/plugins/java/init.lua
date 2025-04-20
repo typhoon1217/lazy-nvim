@@ -4,10 +4,10 @@ return {
   dependencies = {
     {
       "neovim/nvim-lspconfig",
-      event = "BufReadPre",
       opts = {
         servers = {
           jdtls = {
+
             settings = {
               java = {
                 configuration = {
@@ -22,9 +22,9 @@ return {
             },
           },
         },
+
         setup = {
-          jdtls = function()
-            -- Your nvim-java configuration
+          jdtls = function() -- Your nvim-java configuration
             require("java").setup({
               --  list of file that exists in root of the project
               root_markers = {
@@ -79,46 +79,48 @@ return {
               },
             })
 
-            -- Setup the which-key mappings using a simpler approach
-            local wk = require("which-key")
-
-            -- Register for normal mode
-            wk.register({
-              ["<leader><leader>"] = {
-                f = {
-                  name = "Java Build/Run",
-                  ["1"] = { ":JavaBuildBuildWorkspace<CR>", "Build Workspace" },
-                  ["2"] = { ":JavaBuildCleanWorkspace<CR>", "Clean Workspace" },
-                  ["3"] = { ":JavaRunnerRunMain<CR>", "Run Main" },
-                  ["4"] = { ":JavaRunnerStopMain<CR>", "Stop Main" },
-                  ["5"] = { ":JavaRunnerToggleLogs<CR>", "Toggle Runner Logs" },
-                  ["6"] = { ":JavaDapConfig<CR>", "Configure DAP" },
-                  ["7"] = { ":JavaTestRunCurrentClass<CR>", "Run Current Class Test" },
-                  ["8"] = { ":JavaTestDebugCurrentClass<CR>", "Debug Current Class Test" },
-                  ["9"] = { ":JavaTestRunCurrentMethod<CR>", "Run Current Method Test" },
-                  ["10"] = { ":JavaTestDebugCurrentMethod<CR>", "Debug Current Method Test" },
-                  ["11"] = { ":JavaTestViewLastReport<CR>", "View Last Test Report" },
-                  ["12"] = { ":JavaProfile<CR>", "Open Profiles UI" },
-                },
-                r = {
-                  name = "Java Refactoring",
-                  a = { ":JavaRefactorExtractVariableAllOccurrence<CR>", "Extract Variable All" },
-                  c = { ":JavaRefactorExtractConstant<CR>", "Extract Constant" },
-                  f = { ":JavaRefactorExtractField<CR>", "Extract Field" },
-                  m = { ":JavaRefactorExtractMethod<CR>", "Extract Method" },
-                  s = { ":JavaSettingsChangeRuntime<CR>", "Change Runtime" },
-                  v = { ":JavaRefactorExtractVariable<CR>", "Extract Variable" },
-                },
+            -- Setup the which-key spec for Java
+            require("which-key").setup({
+              spec = {
+                { "<leader>j", group = "[J]ava", icon = "☕" }, -- Add this to your existing spec
               },
             })
+
+            -- Register Java keybindings using correct which-key pattern
+            require("which-key").register({
+              j = {
+                name = "Java",
+                -- Build/Run commands
+                b = { ":JavaBuildBuildWorkspace<CR>", "Build Workspace" },
+                c = { ":JavaBuildCleanWorkspace<CR>", "Clean Workspace" },
+                r = { ":JavaRunnerRunMain<CR>", "Run Main" },
+                s = { ":JavaRunnerStopMain<CR>", "Stop Main" },
+                l = { ":JavaRunnerToggleLogs<CR>", "Toggle Runner Logs" },
+                d = { ":JavaDapConfig<CR>", "Configure DAP" },
+                t = { ":JavaTestRunCurrentClass<CR>", "Run Current Class Test" },
+                T = { ":JavaTestDebugCurrentClass<CR>", "Debug Current Class Test" },
+                m = { ":JavaTestRunCurrentMethod<CR>", "Run Current Method Test" },
+                M = { ":JavaTestDebugCurrentMethod<CR>", "Debug Current Method Test" },
+                v = { ":JavaTestViewLastReport<CR>", "View Last Test Report" },
+                p = { ":JavaProfile<CR>", "Open Profiles UI" },
+
+                -- Refactoring commands
+                a = { ":JavaRefactorExtractVariableAllOccurrence<CR>", "Extract Variable All" },
+                C = { ":JavaRefactorExtractConstant<CR>", "Extract Constant" },
+                f = { ":JavaRefactorExtractField<CR>", "Extract Field" },
+                e = { ":JavaRefactorExtractMethod<CR>", "Extract Method" },
+                S = { ":JavaSettingsChangeRuntime<CR>", "Change Runtime" },
+                x = { ":JavaRefactorExtractVariable<CR>", "Extract Variable" },
+              },
+            }, { prefix = "<leader>" })
 
             -- Add keymaps for JavaRunnerRunMain with arguments
             vim.api.nvim_create_user_command("JavaRunMainArgs", function(args)
               vim.cmd("JavaRunnerRunMain " .. args.fargs)
             end, { nargs = "*" })
 
-            -- For command mode mapping, use vim.keymap.set instead of which-key
-            vim.keymap.set("c", "<leader><leader>f3", "JavaRunMainArgs ", { desc = "Run Main with args" })
+            -- Command mode mapping for running with arguments
+            vim.keymap.set("c", "<leader>jr", "JavaRunMainArgs ", { desc = "Run Main with args" })
           end,
         },
       },
